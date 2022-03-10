@@ -2,6 +2,10 @@ addEventListener('fetch', event => {
   event.respondWith(handleRequest(event.request))
 })
 
+function getPasswordLength() {
+  return Math.random() * (32 - 8) + 10;
+}
+
 async function handleRequest(request) {
   const { searchParams } = new URL(request.url)
   let password = searchParams.get('password')
@@ -10,8 +14,8 @@ async function handleRequest(request) {
   if(password === null) {
     badPasswordMessage = 'No password was provided';
   }
-  else if(password.length < 8) {
-    badPasswordMessage = 'Password must be at least 8 characters long';
+  else if(password.length < getPasswordLength()) {
+    badPasswordMessage = 'Password must be ' + getPasswordLength() + ' characters long';
   }
   else if(password.match(/\d+/g) === null) {
     badPasswordMessage = 'Password must contain at least 1 number';
